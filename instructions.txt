@@ -1,12 +1,51 @@
+Architecture:
+- FastAPI + Uvicorn server for async handling
+- Docker for containerization
+- Nginx for reverse proxy
+	- Before Nginx: Browser → http://<VM-IP>:8000 → FastAPI running via Docker
+	- After Nginx: Browser → http://<VM-IP>:80 → NGINX → http://localhost:8000 (FastAPI in Docker)
+	- Or if using SSL: Browser → https://yourdomain.com → NGINX (SSL) → FastAPI
+	- NGINX will listen on port 80 (public) and proxy to localhost:8000 (our FastAPI app via Docker).
+- Monitoring with Prometheus + Grafana:
+	- Prometheus: to scrape metrics
+	- Grafana: to visualize them
+	- Instrumentator: to expose FastAPI metrics
+	- All running on the GCP VM (in Docker).
+
+Deployment:
 1. Set up a VM instance on GCP: e2-micro
 2. To run the server on the VM:
 	- SSH into the VM
 	- Clone the git repo: <TODO>
-	- Build the docker image: `docker built -t hf-api .`
+	- Build the docker image: `docker build -t hf-api .`
 	- Run the docker image: `docker run -d -p 8000:80 hf-api`
-	- Call the API: `curl http://localhost:8000
+	- Call the API: `curl http://localhost:8000` to test the home endpoint
+	- Call the predict endpoint to test using the model:
+		```$ curl -X POST http://localhost:8000/predict \
+		  -H "Content-Type: application/json" \
+		  -d '{"text": "I love using FastAPI!"}'```
+[{"label":"LABEL_0","score":0.5340054035186768}]
 3. Helpful docker commands:
 	- `docker ps -a`
 	- `docker container prune -f`: cleans up all images
 	- `docker logs <container_id>`
 	- `docker stop <container_id>`
+4. To setup Nginx reverse proxy:
+	- `sudo apt update`
+	- `sudo apt install nginx -y`
+	- `sudo vi /etc/nginx/sites-available/default`
+		- Replace with the following:
+		```server {
+		    listen 80;
+		    server_name _;
+
+		    location / {
+		        proxy_pass http://localhost:8000;
+		        proxy_set_header Host $host;
+		        proxy_set_header X-Real-IP $remote_addr;
+		        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		    }
+		}```
+	- `sudo nginx -t && sudo systemctl restart nginx`
+	- Go to http://<gcp_vm_external_ip> and that should load as expected
+5. 

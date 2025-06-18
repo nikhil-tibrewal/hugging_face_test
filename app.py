@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import pipeline
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI()
+instrumentator = Instrumentator()
+instrumentator.instrument(app).expose(app)
 classifier = pipeline("sentiment-analysis", model="prajjwal1/bert-tiny")
 
 class TextInput(BaseModel):
