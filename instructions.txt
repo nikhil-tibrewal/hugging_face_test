@@ -1,0 +1,12 @@
+1. Set up a VM instance on GCP: e2-micro
+2. To run the server on the VM:
+	- SSH into the VM
+	- Clone the git repo: <TODO>
+	- Build the docker image: `docker built -t hf-api .`
+	- Run the docker image: `docker run -d -p 8000:80 hf-api`
+	- Call the API: `curl http://localhost:8000
+3. Helpful docker commands:
+	- `docker ps -a`
+	- `docker container prune -f`: cleans up all images
+	- `docker logs <container_id>`
+	- `docker stop <container_id>`
