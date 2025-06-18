@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from transformers import pipeline
 
 app = FastAPI()
-classifier = pipeline("sentiment-analysis", model="distilbert-base-uncased")
+classifier = pipeline("sentiment-analysis")
 
 class TextInput(BaseModel):
     text: str
