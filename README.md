@@ -1,4 +1,4 @@
-Architecture:
+# Architecture:
 - FastAPI + Uvicorn server for async handling
 - Hugging-face API to do basic sentiment analysis
 - Docker for containerization
@@ -12,8 +12,13 @@ Architecture:
 	- Grafana: to visualize them
 	- Instrumentator: to expose FastAPI metrics
 	- All running on the GCP VM (in Docker).
+- The system uses Prometheus and Grafana to monitor a FastAPI-based HuggingFace model API:
+    - FastAPI Metrics Exposure. The FastAPI application exposes metrics at the /metrics endpoint using the prometheus_fastapi_instrumentator library. These metrics include request counts, response times, status codes, and path patterns.
+    - Prometheus Metrics Collection: Prometheus is configured to periodically scrape the FastAPI metrics endpoint. It stores the collected time-series data in its internal database for querying and analysis.
+    - Grafana Visualization: Grafana is used to visualize the metrics stored in Prometheus. It connects to Prometheus as a data source and provides dashboards for monitoring application performance, error rates, and latency trends in real time.
+	- Together, this setup enables scalable, real-time observability of the model inference API.
 
-Deployment:
+# Deployment:
 1. Set up a VM instance on GCP: e2-micro
     - Name: huggingface-api
     - Region/Zone: Choose close to your users
