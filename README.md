@@ -52,7 +52,8 @@
 	- `sudo apt install nginx -y`
 	- `sudo vi /etc/nginx/sites-available/default`
 		- Replace with the following:
-		```server {
+		```
+		server {
 		    listen 80;
 		    server_name _;
 
@@ -62,7 +63,8 @@
 		        proxy_set_header X-Real-IP $remote_addr;
 		        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		    }
-		}```
+		}
+		```
 	- `sudo nginx -t && sudo systemctl restart nginx`
 	- Go to http://<gcp_vm_external_ip> and that should load as expected
 5. http://<external_id>/metrics should show Prometheus-compatible metrics
