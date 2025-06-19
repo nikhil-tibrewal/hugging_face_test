@@ -33,7 +33,10 @@ This repo is a practice project that uses a FastAPI-base HuggingFace model API a
         - Allow HTTPS traffic
 2. To run the server on the VM:
 	- SSH into the VM
-	- Clone the git repo: <TODO>
+	- Clone the git repo:
+		- `sudo apt update`
+		- `sudo apt install git -y`
+		- `git clone https://github.com/g1803-nikhil/hugging_face_test.git`
 	- Build the docker image: `docker build -t hf-api .`
 	- Run the docker image: `docker run -d -p 8000:80 hf-api`
 	- Call the API: `curl http://localhost:8000` to test the home endpoint
