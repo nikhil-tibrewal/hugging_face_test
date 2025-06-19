@@ -89,6 +89,7 @@ This repo is a practice project that uses a FastAPI-base HuggingFace model API a
     	- Stops and removes all containers from the docker-compose.yml
     	- Removes default network
     	- Keeps your images and volumes
+    - Use `./clean_disk.sh` to clean up all docker images and data before a fresh build and run.
 7. To access endpoints from browser, we need to create a firewall rule to allow TCP ingres to the relevant ports:
 	- Go to your GCP Console
 	- Navigate to: VPC Network > Firewall
