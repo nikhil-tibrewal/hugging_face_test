@@ -38,8 +38,8 @@
 	- Call the predict endpoint to test using the model:
 		```$ curl -X POST http://localhost:8000/predict \
 		  -H "Content-Type: application/json" \
-		  -d '{"text": "I love using FastAPI!"}'```
-[{"label":"LABEL_0","score":0.5340054035186768}]
+		  -d '{"text": "I love using FastAPI!"}'
+		$ [{"label":"LABEL_0","score":0.5340054035186768}]```
 3. Helpful docker commands:
 	- `docker ps -a`
 	- `docker container prune -f`: cleans up all images
