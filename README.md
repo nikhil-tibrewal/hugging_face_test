@@ -1,4 +1,4 @@
-This repo is a practice project that uses a FastAPI-base HuggingFace model API and deploys it to a GCP VM. I used ChatGPT as a coding assistance for this exercise.
+This repo is a practice project that uses a FastAPI-base HuggingFace model API and deploys it to a GCP VM. I used ChatGPT as a coding assistant for this exercise.
 
 # Architecture:
 - FastAPI + Uvicorn server for async handling
