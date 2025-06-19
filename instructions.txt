@@ -14,6 +14,15 @@ Architecture:
 
 Deployment:
 1. Set up a VM instance on GCP: e2-micro
+    - Name: huggingface-api
+    - Region/Zone: Choose close to your users
+    - Machine type: e2-micro or better
+    - Boot disk:
+        - OS: Ubuntu 22.04 LTS
+        - Size: 20 GB
+    - Firewall:
+        - Allow HTTP traffic
+        - Allow HTTPS traffic
 2. To run the server on the VM:
 	- SSH into the VM
 	- Clone the git repo: <TODO>
