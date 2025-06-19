@@ -8,6 +8,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Pre-download HuggingFace model
+RUN python -c "from transformers import pipeline; pipeline('sentiment-analysis', model='prajjwal1/bert-tiny')"
+
 # Copy FastAPI app code
 COPY . .
 
