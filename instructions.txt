@@ -1,5 +1,6 @@
 Architecture:
 - FastAPI + Uvicorn server for async handling
+- Hugging-face API to do basic sentiment analysis
 - Docker for containerization
 - Nginx for reverse proxy
 	- Before Nginx: Browser → http://<VM-IP>:8000 → FastAPI running via Docker
@@ -57,4 +58,37 @@ Deployment:
 		}```
 	- `sudo nginx -t && sudo systemctl restart nginx`
 	- Go to http://<gcp_vm_external_ip> and that should load as expected
-5. 
+5. http://<external_id>/metrics should show Prometheus-compatible metrics
+6. To set up prometheus and grafana:
+	- `$ docker-compose up --build -d`. This command:
+		- Builds your app image (hf-api)
+		- Starts containers for:
+			- FastAPI app
+			- Prometheus
+			- Grafana
+		- Hooks them into a shared network
+		- http://localhost:8000 → FastAPI
+		- http://localhost:8000/metrics → Prometheus metrics
+		- http://localhost:9090 → Prometheus UI
+		- http://localhost:3000 → Grafana dashboard
+	- `$ docker-compose down`. This:
+    	- Stops and removes all containers from the docker-compose.yml
+    	- Removes default network
+    	- Keeps your images and volumes
+7. To access endpoints from browser, we need to create a firewall rule to allow TCP ingres to the relevant ports:
+	- Go to your GCP Console
+	- Navigate to: VPC Network > Firewall
+	- Click “Create firewall rule”
+	- Set:
+    	- Name: allow-monitoring
+    	- Targets: All instances in the network (or specify your VM’s tag)
+    	- Source IP ranges: 0.0.0.0/0
+    	- Protocols and ports:
+			- Select “Specified protocols and ports”
+    		- Check “tcp”
+			- Add: 8000,9090,3000
+	- Now all 3 endpoints should work:
+		- http://<external_ip>:8000 → FastAPI
+		- http://<external_ip>:8000/metrics → Prometheus metrics
+		- http://<external_ip>:9090 → Prometheus UI
+		- http://<external_ip>:3000 → Grafana dashboard
